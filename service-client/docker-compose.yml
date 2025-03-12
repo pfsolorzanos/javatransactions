@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres-clients:
+    image: postgres:16
+    container_name: client-db-container
+    restart: always
+    environment:
+      POSTGRES_DB: client-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+    networks:
+      - financial-network
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app-clients:
+    image: service-client-img:latest
+    container_name: service-client-app
+    depends_on:
+      - postgres-clients
+    environment:
+      DATABASE_USER: ${DATABASE_USER:-postgres}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-123456}
+      DATABASE_URL: ${DATABASE_URL:-jdbc:postgresql://localhost:5433/client-db}
+    networks:
+      - financial-network
+    ports:
+      - "8081:8080"
+volumes:
+  postgres_data:
+networks:
+  financial-network:
+    external: true
