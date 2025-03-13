@@ -9,7 +9,7 @@ To run these microservices:
 You must run each command from each microservice folder, which contains a specific Dockerfile.
 
 2. Push the images to your DockerHub, these commands were used:
-3. 
+
 `docker tag service-client-img:latest docker-user/service-client-img:latest`
 `docker push docker-user/service-client-img:latest`
 
